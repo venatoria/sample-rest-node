@@ -13,9 +13,9 @@ jobs:
             - checkout
             - run:
                  name:     building image
-                 command:  docker build venatoria/emasters-connection-api
+                 command:  docker build
                  #command: ssh -o StrictHostKeyChecking=no ubuntu@ec2-18-191-199-62.us-east-2.compute.amazonaws.com "cd ~/proak-dota2; sh deploy.sh"
-                 
+
     # The build job
     deploy:
             - run:
