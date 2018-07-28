@@ -20,12 +20,8 @@ jobs:
                          tar -xz -C /tmp -f /tmp/docker-$VER.tgz
                          sudo mv -f /tmp/docker/* /usr/bin
                - run:
-                    name: Install docker client
-                    command: ls /usr/bin/docker
-               - run:
                     name: building image
-                    #command: docker build -t venatoria/emasters-connection-api .
-                    command: apt-get update
+                    command: sudo docker build -t venatoria/emasters-connection-api .
 
      # The build job
      deploy:
