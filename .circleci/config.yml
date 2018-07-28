@@ -13,11 +13,12 @@ jobs:
                - checkout
                - run:
                     name: building image
-                    #command: docker build -t venatoria/emasters-connection-api .
-                    command: ls
+                    command: docker build -t venatoria/emasters-connection-api .
 
      # The build job
      deploy:
+          docker:
+               - image: circleci/node:10-browsers
           steps:
                - run:
                     name: Deploying to EC2
