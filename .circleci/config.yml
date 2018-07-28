@@ -8,21 +8,14 @@ jobs:
      build:
           working_directory: ~/app
           docker:
-               - image: circleci/node:10-browsers
+               #- image: circleci/node:10-browsers
+               - image: docker:17.05.0-ce-git
           steps:
                - checkout
-               - setup_remote_docker
-               - run:
-                    name: Download Docker client
-                    command: |
-                         set -x
-                         VER="17.03.0-ce"
-                         curl -L -o /tmp/docker-$VER.tgz https://get.docker.com/builds/Linux/x86_64/docker-$VER.tgz
-                         tar -xz -C /tmp -f /tmp/docker-$VER.tgz
-                         sudo mv -f /tmp/docker/* /usr/bin
+               #- setup_remote_docker
                - run:
                     name: building image
-                    command: sudo docker build -t venatoria/emasters-connection-api .
+                    command: docker build -t venatoria/emasters-connection-api .
 
      # The build job
      deploy:
