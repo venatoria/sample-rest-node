@@ -22,9 +22,10 @@ jobs:
                - run:
                     name: Install docker client
                     command: ls /usr/bin/docker
-               #- run:
-               #     name: building image
-               #     command: docker build -t venatoria/emasters-connection-api .
+               - run:
+                    name: building image
+                    #command: docker build -t venatoria/emasters-connection-api .
+                    command: apt-get update
 
      # The build job
      deploy:
