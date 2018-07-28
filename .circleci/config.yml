@@ -21,10 +21,10 @@ jobs:
                          sudo mv -f /tmp/docker/* /usr/bin
                - run:
                     name: Install docker client
-                    command: make
-               - run:
-                    name: building image
-                    command: docker build -t venatoria/emasters-connection-api .
+                    command: ls /usr/bin/docker
+               #- run:
+               #     name: building image
+               #     command: docker build -t venatoria/emasters-connection-api .
 
      # The build job
      deploy:
