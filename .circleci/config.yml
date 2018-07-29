@@ -10,31 +10,30 @@ jobs:
           docker:
                - image: docker:17.05.0-ce-git
           steps:
-               - checkout
-               - setup_remote_docker
+               - checkout #get fresh code form github
+               - setup_remote_docker #enable remote docker execution
                - run:
-                    name: building image
+                    name: building image #We build here so we don't need pulling code into ec2
                     command: docker build -t venatoria/emasters-connection-api .
                - run:
-                    name: check the image
-                    command: docker images -a
-               - run:
+                    # We need the image as real file
+                    # This way we can send it to the ec2 instead of pushing to registery
+                    # Working around a registery (dockerHub or ECR) saves money and setup
                     name: save the image for deployement
                     command: docker save -o emasters-connection-docker-image.tar venatoria/emasters-connection-api
                - run:
                     name: Copy the image to our instance
-                    command: ls
+                    command: scp emasters-connection-docker-image.tar ubuntu@ec2-18-216-231-124.us-east-2.compute.amazonaws.com:~
 
      # The build job
      deploy:
-          # docker:
-          #      - image: circleci/node:10-browsers
+          docker:
+               - image: docker:17.05.0-ce-git
           steps:
                - run:
                     name: Deploying to EC2
-                    # All deployement steps are in one file included
-                    # deploy.sh will fetch code, run docker, and launch app.
-                    command:  ls
+                    # We ssh into the ec2 to load the saved image and run it
+                    command:  ssh -o StrictHostKeyChecking=no ubuntu@ec2-18-216-231-124.us-east-2.compute.amazonaws.com "cd ~; ls"
                     #command: ssh -o StrictHostKeyChecking=no ubuntu@ec2-18-191-199-62.us-east-2.compute.amazonaws.com "cd ~/proak-dota2; sh deploy.sh"
 
 workflows:
