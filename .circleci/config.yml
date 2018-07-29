@@ -16,6 +16,15 @@ jobs:
                - run:
                     name: building image
                     command: docker build -t venatoria/emasters-connection-api .
+               - run:
+                    name: check the image
+                    command: docker images -a
+               - run:
+                    name: save the image for deployement
+                    command: docker save -o emasters-connection-docker-image.tar venatoria/emasters-connection-api
+               - run:
+                    name: see if we have the file
+                    command: ls
 
      # The build job
      deploy:
@@ -26,7 +35,7 @@ jobs:
                     name: Deploying to EC2
                     # All deployement steps are in one file included
                     # deploy.sh will fetch code, run docker, and launch app.
-                    command:  docker images -a
+                    command:  ls
                     #command: ssh -o StrictHostKeyChecking=no ubuntu@ec2-18-191-199-62.us-east-2.compute.amazonaws.com "cd ~/proak-dota2; sh deploy.sh"
 
 workflows:
