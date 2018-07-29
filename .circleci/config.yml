@@ -5,7 +5,7 @@ version: 2
 # Can extend later if needed
 jobs:
      # The build job
-     build:
+     deploy:
           working_directory: ~/app
           docker:
                - image: docker:17.05.0-ce-git
@@ -24,21 +24,14 @@ jobs:
                - run:
                     name: Copy the image to our instance
                     command: scp -o StrictHostKeyChecking=no emasters-connection-docker-image.tar ubuntu@ec2-18-216-231-124.us-east-2.compute.amazonaws.com:~
-
-     # The build job
-     deploy:
-          docker:
-               - image: docker:17.05.0-ce-git
-          steps:
                - run:
-                    name: Deploying to EC2
+                    name: Deploy prod build
                     # We ssh into the ec2 to load the saved image and run it
-                    command:  ssh -o StrictHostKeyChecking=no ubuntu@ec2-18-216-231-124.us-east-2.compute.amazonaws.com "cd ~; ls"
+                    command:  ssh -o StrictHostKeyChecking=no ubuntu@ec2-18-216-231-124.us-east-2.compute.amazonaws.com "cd ~; sudo docker load -i emasters-connection-docker-image.tar; sudo docker run -d venatoria/emasters-connection-api"
                     #command: ssh -o StrictHostKeyChecking=no ubuntu@ec2-18-191-199-62.us-east-2.compute.amazonaws.com "cd ~/proak-dota2; sh deploy.sh"
 
 workflows:
      version: 2
      build_and_deploy:
           jobs:
-               - build
                - deploy
