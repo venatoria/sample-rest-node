@@ -8,7 +8,6 @@ jobs:
      build:
           working_directory: ~/app
           docker:
-               #- image: circleci/node:10-browsers
                - image: docker:17.05.0-ce-git
           steps:
                - checkout
@@ -23,13 +22,13 @@ jobs:
                     name: save the image for deployement
                     command: docker save -o emasters-connection-docker-image.tar venatoria/emasters-connection-api
                - run:
-                    name: see if we have the file
+                    name: Copy the image to our instance
                     command: ls
 
      # The build job
      deploy:
-          docker:
-               - image: circleci/node:10-browsers
+          # docker:
+          #      - image: circleci/node:10-browsers
           steps:
                - run:
                     name: Deploying to EC2
